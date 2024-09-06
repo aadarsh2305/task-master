@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useMsal } from "@azure/msal-react";
+import { InteractionType } from "@azure/msal-browser";
 
 function App() {
+  const { instance } = useMsal();
+
+  const login = async () => {
+    try {
+      await instance.loginPopup({
+        scopes: ["User.Read"],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const logout = () => {
+    instance.logoutPopup();
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <h1>Welcome to Prolifics</h1> */}
+      <button onClick={login}>Login with Azure</button>
+      {/* <button onClick={logout}>Logout with Azure</button> */}
     </div>
   );
 }
